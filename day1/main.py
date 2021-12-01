@@ -33,4 +33,4 @@ def second(filepath):
 
   return increments
 
-print(second("input1.txt"))
+print(second("input.txt"))
