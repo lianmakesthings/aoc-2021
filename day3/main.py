@@ -1,6 +1,10 @@
-def first(filepath):
+def readFile(filepath):
   f = open(filepath, "r")
-  lines = [line.replace("\n", "") for line in f.readlines()]
+  return f.readlines()
+
+
+def first(filepath):
+  lines = [line.replace("\n", "") for line in readFile(filepath)]
   gamma = ""
   epsilon = ""
   
@@ -12,8 +16,7 @@ def first(filepath):
   return int(gamma, 2) * int(epsilon, 2)
 
 def second(filepath):
-  f = open(filepath, "r")
-  allLines = [line.replace("\n", "") for line in f.readlines()]
+  allLines = [line.replace("\n", "") for line in readFile(filepath)]
   
   lines = allLines
   for i in range(len(lines[0])):
