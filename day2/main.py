@@ -1,15 +1,25 @@
 import re
 
-def first(filepath):
+regex = re.compile('([a-z]+) (\\d)')
+
+def readFile(filepath):
   f = open(filepath, "r")
-  regex = re.compile('([a-z]+) (\\d)')
+  return f.readlines()
+
+def parseCommand(line):
+  matches = regex.findall(line)
+  direction = matches[0][0]
+  val = int(matches[0][1])
+
+  return (direction, val)
+
+
+def first(filepath):
   depth = 0
   position = 0
 
-  for line in f.readlines():
-    matches = regex.findall(line)
-    direction = matches[0][0]
-    val = int(matches[0][1])
+  for line in readFile(filepath):
+    (direction, val) = parseCommand(line)
 
     if ('forward' == direction):
       position += val
@@ -23,16 +33,12 @@ def first(filepath):
   return position * depth
 
 def second(filepath):
-  f = open(filepath, "r")
-  regex = re.compile('([a-z]+) (\\d)')
   aim = 0
   position = 0
   depth = 0
 
-  for line in f.readlines():
-    matches = regex.findall(line)
-    direction = matches[0][0]
-    val = int(matches[0][1])
+  for line in readFile(filepath):
+    (direction, val) = parseCommand(line)
 
     if ('forward' == direction):
       position += val
@@ -45,5 +51,3 @@ def second(filepath):
       print('something went wrong')
 
   return position * depth
-
-print(second('input.txt'))
