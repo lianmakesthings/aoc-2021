@@ -1,11 +1,14 @@
 import sys
 
-def first(filepath):
+def readFile(filepath):
   f = open(filepath, "r")
+  return f.readlines()
+
+def first(filepath):
   lastVal = sys.maxsize
   increments = 0
   
-  for line in f.readlines():
+  for line in readFile(filepath):
     val = int(line)
     if (val > lastVal):
       increments += 1
@@ -15,22 +18,16 @@ def first(filepath):
   return increments
 
 def second(filepath):
-  f = open(filepath, "r")
-  lines = f.readlines()
+  lines = readFile(filepath)
 
   lastSum = sys.maxsize
   increments = 0
-
+  
   for i in range(0, len(lines)-2):
-    val = int(lines[i])
-    val1 = int(lines[i+1])
-    val2 = int(lines[i+2])
-    sum = val + val1 + val2
-    if (sum > lastSum):
+    currentSum = sum([int(x) for x in lines[i:i+3]])
+    if (currentSum > lastSum):
       increments += 1
 
-    lastSum = sum
+    lastSum = currentSum
 
   return increments
-
-print(second("input.txt"))
