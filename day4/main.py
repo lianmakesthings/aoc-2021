@@ -7,11 +7,10 @@ boardSize = 5
 def first(filepath):
   input = [x.replace("\n", "") for x in readFile(filepath) if "\n" != x]
   drawnNumbers = input.pop(0).split(",")
-  
   boards = []
   lastBoardIndex = int(len(input)/boardSize)
   for r in range(0, len(input)):
-    row = list(filter(lambda a: len(a) > 0, input[r].split(" ")))
+    row = [x for x in input[r].split(" ") if len(x) > 0]
     for c in range(0, boardSize):
       boards.append((int(r/boardSize), r%boardSize, c, int(row[c])))
 
@@ -21,15 +20,15 @@ def first(filepath):
   number = 0
   while(False == won):
     number = int(drawnNumbers.pop(0))
-    for n in list(filter(lambda a: a[3] == number, boards)):
-      marked.append(n)
+    marked += [x for x in boards if x[3] == number]
+    boards = [x for x in boards if x[3] != number]
     
     for b in range(0, lastBoardIndex):
-      markedInBoard = list(filter(lambda a: a[0] == b, marked))
+      markedInBoard = [x for x in marked if x[0] == b]
       if len(markedInBoard) < boardSize:
         continue
       for r in range(0, boardSize):
-        row = list(filter(lambda a: a[1] == r, markedInBoard))
+        row = [x for x in markedInBoard if x[1] == r]
         if len(row) >= boardSize:
           won = b
           continue
@@ -37,14 +36,63 @@ def first(filepath):
       if False != won:
         continue
       for c in range(0, boardSize):
-        column = list(filter(lambda a: a[2] == c, markedInBoard))
+        column = [x for x in markedInBoard if x[2] == c]
         if len(column) >= boardSize:
           won = b
 
   winningBoard = [x for x in boards if won == x[0]]
-  unmarkedNumbers = list(filter(lambda a: a not in marked, winningBoard))
+  unmarkedNumbers = [x for x in winningBoard if x not in marked]
   sumUnmarked = sum([x[3] for x in unmarkedNumbers])
 
   return sumUnmarked * number
 
-print(first("input.txt"))
+def second(filepath):
+  input = [x.replace("\n", "") for x in readFile(filepath) if "\n" != x]
+  drawnNumbers = input.pop(0).split(",")
+  boards = []
+  lastBoardIndex = int(len(input)/boardSize)
+  for r in range(0, len(input)):
+    row = [x for x in input[r].split(" ") if len(x) > 0]
+    for c in range(0, boardSize):
+      boards.append((int(r/boardSize), r%boardSize, c, int(row[c])))
+
+  marked = []
+  number = int(drawnNumbers.pop(0))
+  winningBoard = []
+  while len(boards) > 0:
+    won = False
+    print("before gameloop", won)
+    while(type(won) == bool):
+      marked += [x for x in boards if x[3] == number]
+      boards = [x for x in boards if x[3] != number]
+      
+      for b in range(0, lastBoardIndex):
+        markedInBoard = [x for x in marked if x[0] == b]
+        if len(markedInBoard) < boardSize:
+          continue
+        for r in range(0, boardSize):
+          row = [x for x in markedInBoard if x[1] == r]
+          if len(row) >= boardSize:
+            won = b
+            continue
+        if False != won:
+          continue
+
+        for c in range(0, boardSize):
+          column = [x for x in markedInBoard if x[2] == c]
+          if len(column) >= boardSize:
+            won = b
+            continue
+        if False != won:
+          continue
+      if False == won:
+        number = int(drawnNumbers.pop(0))
+    winningBoard = [x for x in boards if won == x[0]]
+    unmarkedNumbers = [x for x in winningBoard if x not in marked]
+    sumUnmarked = sum([x[3] for x in unmarkedNumbers])
+    boards = [x for x in boards if x not in winningBoard]
+    marked = [x for x in marked if x[0] is not won]
+
+  return sumUnmarked * number
+
+print(second("input.txt"))
