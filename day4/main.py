@@ -5,7 +5,7 @@ def readFile(filepath):
 boardSize = 5
 
 def checkForWin(marked, lastBoardIndex):
-  won = False
+  won = -1
   for b in range(0, lastBoardIndex):
     markedInBoard = [x for x in marked if x[0] == b]
     if len(markedInBoard) < boardSize:
@@ -15,7 +15,7 @@ def checkForWin(marked, lastBoardIndex):
       if len(row) >= boardSize:
         won = b
         continue
-    if False != won:
+    if won > -1:
       continue
 
     for c in range(0, boardSize):
@@ -23,7 +23,7 @@ def checkForWin(marked, lastBoardIndex):
       if len(column) >= boardSize:
         won = b
         continue
-    if False != won:
+    if won > -1:
       continue
   return won
 
@@ -38,9 +38,9 @@ def first(filepath):
       boards.append((int(r/boardSize), r%boardSize, c, int(row[c])))
 
   marked = []
-  won = False
+  won = -1
   number = 0
-  while(False == won):
+  while(won < 0):
     number = int(drawnNumbers.pop(0))
     marked += [x for x in boards if x[3] == number]
     boards = [x for x in boards if x[3] != number]
@@ -66,12 +66,12 @@ def second(filepath):
   number = int(drawnNumbers.pop(0))
   winningBoard = []
   while len(boards) > 0:
-    won = False
-    while(type(won) == bool):
+    won = -1
+    while(won < 0):
       marked += [x for x in boards if x[3] == number]
       boards = [x for x in boards if x[3] != number]
       won = checkForWin(marked, lastBoardIndex)
-      if False == won:
+      if won < 0:
         number = int(drawnNumbers.pop(0))
     winningBoard = [x for x in boards if won == x[0]]
     unmarkedNumbers = [x for x in winningBoard if x not in marked]
