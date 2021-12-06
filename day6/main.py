@@ -7,13 +7,11 @@ def loop(fishMap, days):
     newFishMap = {}
     for x in range(0, 9):
       newFishMap[8] = fishMap[0]
-      print(x, fishMap, newFishMap)
       if x > 0:
         newFishMap[x-1] = fishMap[x] + newFishMap[x-1] if x-1 in newFishMap else fishMap[x]
       else:
         newFishMap[6] = fishMap[x]
 
-    print(fishMap, newFishMap)
     fishMap = newFishMap
     days -= 1
 
