@@ -21,8 +21,6 @@ def second(filepath):
     line = line.split(" | ")
     unknownDigits = [[c for c in x] for x in line[0].split()]
     output = [[c for c in x] for x in line[1].split()]
-    print("unknownDigits", unknownDigits)
-    print("output", output)
 
     knownDigits[1] = next(filter(lambda a: len(a) == 2, unknownDigits))
     unknownDigits.remove(knownDigits[1])
@@ -53,6 +51,7 @@ def second(filepath):
 
     knownDigits[2] = unknownDigits.pop()
   
+    print(knownDigits.keys(), knownDigits.values())
     number = ""
     for o in output:
       for d in knownDigits.values():
@@ -60,7 +59,7 @@ def second(filepath):
           idx = list(knownDigits.values()).index(d)
           number += str(list(knownDigits.keys())[idx])
           break
-
+    print(number)
     sum += int(number)
   return sum
 
