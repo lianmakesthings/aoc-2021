@@ -5,17 +5,18 @@ def readFile(filepath):
 def sortByVal(p):
   return p[2]
 
-def first(filepath):
+def buildMap(filepath):
   input = [x.replace("\n", "") for x in readFile(filepath)]
   heightMap = []
   for x in range(len(input)):
     line = input[x]
     for y in range(len(line)):
       heightMap.append((x, y, int(line[y])))
-  
-  
-  lowPoints = [] 
   heightMap.sort(key=sortByVal, reverse=True)
+  return heightMap
+
+def calcLowPoints(heightMap):
+  lowPoints = []
   unchecked = heightMap
   while len(unchecked) > 0:
     point = unchecked.pop()
@@ -26,6 +27,9 @@ def first(filepath):
     if all(pointValue < p[2] for p in adjacentPoints):
       lowPoints.append(point)
       unchecked = [x for x in unchecked if not x in adjacentPoints]
-  return sum([x[2] for x in lowPoints]) + len(lowPoints)
+  return lowPoints
 
-print(first("input.txt"))
+def first(filepath):
+  heightMap = buildMap(filepath)
+  lowPoints = calcLowPoints(heightMap)
+  return sum([x[2] for x in lowPoints]) + len(lowPoints)
