@@ -19,20 +19,13 @@ def first(filepath):
   flashCount = 0
   while steps > 0:
     map = [(x[0], x[1], x[2]+1) for x in map]
-    print("first increase", map)
     flashing = [(x[0], x[1]) for x in map if x[2] > 9]
-    print("flashing", flashing)
 
     for o in flashing:
       adjacent = getAdjacentPoints(o, map)
-      #print(o, adjacent)
       map = [(x[0], x[1], x[2]+1) if x in adjacent else x for x in map]
-      #print("increase adjacent", map)
-
       newFlashes = [(x[0], x[1]) for x in adjacent if x[2] > 8 and (x[0], x[1]) not in flashing]
-      #print("newFlashes", newFlashes)
       flashing += [x for x in newFlashes]
-      #print("flashing + newFlashes", flashing)
       
     map = [(x[0], x[1], 0) if x[2]>9 else x for x in map]
     
@@ -58,11 +51,8 @@ def second(filepath):
     for o in flashing:
       adjacent = getAdjacentPoints(o, map)
       map = [(x[0], x[1], x[2]+1) if x in adjacent else x for x in map]
-
       newFlashes = [(x[0], x[1]) for x in adjacent if x[2] > 8 and (x[0], x[1]) not in flashing]
-      #print("newFlashes", newFlashes)
       flashing += [x for x in newFlashes]
-      #print("flashing + newFlashes", flashing)
       
     map = [(x[0], x[1], 0) if x[2]>9 else x for x in map]
     
