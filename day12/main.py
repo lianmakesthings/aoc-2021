@@ -11,7 +11,7 @@ def first(filepath):
       pathMap[start].append(end)
     else:
       pathMap[start] = [end]
-    
+
     if not (start == "start" or end == "end"):
       if end in pathMap:
         pathMap[end].append(start)
@@ -27,12 +27,8 @@ def first(filepath):
   paths = [["start"]]
   for p in paths:
     start = p[-1]
-    pathsEndInStart = [x for x in paths if x[-1] == start]
     if start != "end":
-      newPaths = [y + [x] for x in pathMap[start] for y in pathsEndInStart if not (x.islower() and x in y)]
+      newPaths = [p + [x] for x in pathMap[start] if not (x.islower() and x in p)]
       paths += [x for x in newPaths if x not in paths]
   
-  return sum(1 if x[0] == "start" and x[-1] == "end" else 0 for x in paths)
-
-print(first("input.txt"))
-
+  return len([x for x in paths if x[-1] == "end"])
