@@ -32,3 +32,30 @@ def first(filepath):
       paths += [x for x in newPaths if x not in paths]
   
   return len([x for x in paths if x[-1] == "end"])
+
+def second(filepath):
+  input = [x.replace("\n", "") for x in readFile(filepath)]
+  pathMap = {}
+  for line in input:
+    start, end = line.split("-")
+    if start in pathMap:
+      pathMap[start].append(end)
+    else:
+      pathMap[start] = [end]
+
+    if not (start == "start" or end == "end"):
+      if end in pathMap:
+        pathMap[end].append(start)
+      else:
+        pathMap[end] = [start]
+  print(pathMap)
+  paths = [["start"]]
+  for p in paths:
+    start = p[-1]
+    if start != "end":
+      newPaths = [p + [x] for x in pathMap[start] if not (x == "start" or (x.islower() and p.count(x) > 0 and max([p.count(a) for a in p if a.islower()]) > 1))]
+      paths += [x for x in newPaths if x not in paths]
+
+  return len([x for x in paths if x[-1] == "end"])
+
+print(second("input.txt"))
