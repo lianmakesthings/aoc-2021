@@ -32,16 +32,24 @@ def isOperatorPacket(packetString):
 
 def calculatePacketVersion(packetString):
   print("packetString", packetString)
+  if len(packetString) < 11:
+    return 0
   version = getVersion(packetString)
   if isOperatorPacket(packetString):
     lengthType = getLengthType(packetString)
+    index = 0
     if lengthType == 0:
       packetLength = int(packetString[7:22], 2)
       index = 22
+      version += calculatePacketVersion(packetString[index:index+packetLength])
+      version += calculatePacketVersion(packetString[index+packetLength:])
     else:
       subPacketCount = int(packetString[7:18], 2)
       index = 18
-    version += calculatePacketVersion(packetString[index:])
+      version += calculatePacketVersion(packetString[index:])
+  else:
+    packetLength = getPacketLength(packetString)
+    version += calculatePacketVersion(packetString[packetLength:])
   return version
 
 def first(filepath):
@@ -69,5 +77,3 @@ def first(filepath):
   print("binaryString", binaryString)
   version = calculatePacketVersion(binaryString)
   return version
-
-
