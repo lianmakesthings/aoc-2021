@@ -5,20 +5,44 @@ def readFile(filepath):
   return content[0]
 
 def getVersion(string):
-  return int(string[:3], 2)
+  version = int(string[:3], 2)
+  print("version", version)
+  return version
 
-def packetEndIndex(string):
-  type = int(string[3:6], 2)
-  index = 0
-  if type == 4:
-    lastGroup = False
-    while lastGroup == False:
-      currentGroup = string[index:index+5]
-      print(index, currentGroup)
-      index += 5
-      if currentGroup[0] == "0":
-        lastGroup = True
+def getLengthType(packetString):
+  lengthType = int(packetString[6])
+  print("lengthType", lengthType)
+  return lengthType
+
+def getPacketLength(packetString):
+  index = 6
+  lastGroup = False
+  while lastGroup == False:
+    currentGroup = packetString[index:index+5]
+    index += 5
+    if currentGroup[0] == "0":
+      lastGroup = True 
+  print("packetLength", index)
   return index
+
+def isOperatorPacket(packetString):
+   type = int(packetString[3:6], 2)
+   print("type", type)
+   return type != 4
+
+def calculatePacketVersion(packetString):
+  print("packetString", packetString)
+  version = getVersion(packetString)
+  if isOperatorPacket(packetString):
+    lengthType = getLengthType(packetString)
+    if lengthType == 0:
+      packetLength = int(packetString[7:22], 2)
+      index = 22
+    else:
+      subPacketCount = int(packetString[7:18], 2)
+      index = 18
+    version += calculatePacketVersion(packetString[index:])
+  return version
 
 def first(filepath):
   input = readFile(filepath)
@@ -41,36 +65,9 @@ def first(filepath):
     "F": "1111"
   }
 
-  binary = "".join([letterToBinary[x] for x in input])
-  version = getVersion(binary)
-  type = int(binary[3:6], 2)
-  print(binary, version, type)
-  if type == 4:
-    # lastGroup = False
-    # index = 6
-    # value = ""
-    # while lastGroup == False:
-    #   currentGroup = binary[index:index+5]
-    #   value += currentGroup[1:]
-    #   print(value, currentGroup)
-    #   index += 5
-    #   if currentGroup[0] == "0":
-    #     lastGroup = True
-    print("literal")
-  else:
-    lengthType = int(binary[6])
-    if lengthType == 0:
-      length = int(binary[7:22], 2)
-      print(lengthType, length)
-      index = 22
-      while index < len(binary):
-        version += getVersion(binary[index:])
-        index += packetEndIndex(binary[index:])
-        print(index, len(binary))
-
-    else:
-      subPacketCount = int(binary[7:18], 2)
-      print(lengthType, subPacketCount)
-  print(version)
+  binaryString = "".join([letterToBinary[x] for x in input])
+  print("binaryString", binaryString)
+  version = calculatePacketVersion(binaryString)
+  return version
 
 
