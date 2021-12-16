@@ -44,7 +44,6 @@ def calculatePacketVersion(packetString):
       version += calculatePacketVersion(packetString[index:index+packetLength])
       version += calculatePacketVersion(packetString[index+packetLength:])
     else:
-      subPacketCount = int(packetString[7:18], 2)
       index = 18
       version += calculatePacketVersion(packetString[index:])
   else:
@@ -52,9 +51,8 @@ def calculatePacketVersion(packetString):
     version += calculatePacketVersion(packetString[packetLength:])
   return version
 
-def first(filepath):
-  input = readFile(filepath)
-  letterToBinary = {
+def letterToBinary(letter):
+  map = {
     "0": "0000",
     "1": "0001",
     "2": "0010",
@@ -72,8 +70,13 @@ def first(filepath):
     "E": "1110",
     "F": "1111"
   }
+  return map[letter]
 
-  binaryString = "".join([letterToBinary[x] for x in input])
+
+def first(filepath):
+  input = readFile(filepath)
+
+  binaryString = "".join([letterToBinary(x) for x in input])
   print("binaryString", binaryString)
   version = calculatePacketVersion(binaryString)
   return version
