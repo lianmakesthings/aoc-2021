@@ -158,7 +158,7 @@ def calculatePacketValue(string):
           index += length
       else:
         index = 22
-        length = getPacketLength(string[index:])
+        length = getPacketLength(string)
         lastIndex = index+length
         while index < lastIndex:
           length = getPacketLength(string[index:])

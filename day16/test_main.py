@@ -12,26 +12,26 @@ def test_first_c():
 def test_first_d():
   assert first("test-d.txt") == 31
 
-def test_second_e():
+def test_second_a():
   assert second("test-e.txt") == 3
 
-def test_second_f():
+def test_second_b():
   assert second("test-f.txt") == 54
 
-def test_second_g():
+def test_second_c():
   assert second("test-g.txt") == 7
 
-def test_second_h():
+def test_second_d():
   assert second("test-h.txt") == 9
 
-def test_second_i():
+def test_second_e():
   assert second("test-i.txt") == 1
 
-def test_second_j():
+def test_second_f():
   assert second("test-j.txt") == 0
 
-def test_second_k():
+def test_second_g():
   assert second("test-k.txt") == 0
 
-def test_second_l():
+def test_second_h():
   assert second("test-l.txt") == 1
