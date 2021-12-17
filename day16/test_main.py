@@ -1,4 +1,4 @@
-from main import first
+from main import first, second
 
 def test_first_a():
   assert first("test-a.txt") == 16
@@ -11,3 +11,27 @@ def test_first_c():
 
 def test_first_d():
   assert first("test-d.txt") == 31
+
+def test_second_e():
+  assert second("test-e.txt") == 3
+
+def test_second_f():
+  assert second("test-f.txt") == 54
+
+def test_second_g():
+  assert second("test-g.txt") == 7
+
+def test_second_h():
+  assert second("test-h.txt") == 9
+
+def test_second_i():
+  assert second("test-i.txt") == 1
+
+def test_second_j():
+  assert second("test-j.txt") == 0
+
+def test_second_k():
+  assert second("test-k.txt") == 0
+
+def test_second_l():
+  assert second("test-l.txt") == 1
